@@ -5,8 +5,11 @@
 <head>
 <meta charset="UTF-8"/>
 <title>Cadastro de título</title>
-<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
-<link rel="stylesheet" type="text/css" href="css/style.css"/>
+<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="/css/style.css"/>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
 </head>
 <body>
 	<nav class="navbar navbar-inverse navbar-static-top">
@@ -51,8 +54,7 @@
 					<label for="status" class="col-sm-2 control-label">Status</label>
 					<div class="col-sm-2">
 						<select class="form-control" name="status">
-							<option value="PENDENTE">Pendente</option>
-							<option value="RECEBIDO">Recebido</option>
+							<option th:each="status : ${statusTitulo}" th:value="${status}" th:text="${status.descricao}"></option>
                     	</select>
                     </div>
 				</div>
