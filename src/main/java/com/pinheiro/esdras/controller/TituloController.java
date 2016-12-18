@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.pinheiro.esdras.model.StatusTitulo;
 import com.pinheiro.esdras.model.Titulo;
 import com.pinheiro.esdras.repository.Titulos;
+import com.pinheiro.esdras.service.CadastroTituloService;
 
 @Controller
 @RequestMapping("/titulos")
@@ -29,9 +30,13 @@ public class TituloController {
 	private static String ATRIBUTO_TITULOS = "titulos";
 	
 	private static String MSG_SALVO_CONSUCESSO = "Título salvo com sucesso!!";
+	private static String MSG_EXCLUSAO_CONSUCESSO = "Título removido com sucesso!";
 	
 	@Autowired
 	private Titulos titulos;
+	
+	@Autowired
+	private CadastroTituloService cadastroTituloService;
 	
 	@RequestMapping("/novo")
 	public ModelAndView novo(){
@@ -45,9 +50,14 @@ public class TituloController {
 		if(erros.hasErrors()){
 			return CADASTRO_TITULO;
 		}
-		titulos.save(titulo);
+		try{
+		cadastroTituloService.salvar(titulo);
 		attributes.addFlashAttribute(ATRIBUTO_MENSAGEM, MSG_SALVO_CONSUCESSO);
 		return "redirect:/titulos/novo";
+		}catch(IllegalArgumentException e){
+			erros.rejectValue("dataVencimento", null, e.getMessage());
+			return CADASTRO_TITULO;
+		}
 	}
 	
 	@RequestMapping
@@ -63,6 +73,13 @@ public class TituloController {
 		ModelAndView mv = new ModelAndView(CADASTRO_TITULO);
 		mv.addObject(titulo);
 		return mv;
+	}
+	
+	@RequestMapping(value="{codigo}", method = RequestMethod.DELETE)
+	public String excluir(@PathVariable Long codigo, RedirectAttributes attributes){
+		cadastroTituloService.excluir(codigo);
+		attributes.addFlashAttribute(ATRIBUTO_MENSAGEM, MSG_EXCLUSAO_CONSUCESSO);
+		return "redirect:/titulos";
 	}
 	
 	@ModelAttribute("statusTitulo")
