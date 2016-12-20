@@ -17,7 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.pinheiro.esdras.model.StatusTitulo;
 import com.pinheiro.esdras.model.Titulo;
-import com.pinheiro.esdras.repository.Titulos;
+import com.pinheiro.esdras.repository.filter.TituloFilter;
 import com.pinheiro.esdras.service.CadastroTituloService;
 
 @Controller
@@ -32,9 +32,6 @@ public class TituloController {
 	
 	private static String MSG_SALVO_CONSUCESSO = "Título salvo com sucesso!!";
 	private static String MSG_EXCLUSAO_CONSUCESSO = "Título removido com sucesso!";
-	
-	@Autowired
-	private Titulos titulos;
 	
 	@Autowired
 	private CadastroTituloService cadastroTituloService;
@@ -62,8 +59,8 @@ public class TituloController {
 	}
 	
 	@RequestMapping
-	public ModelAndView pesquisar(){
-		List<Titulo> todosTitulos = titulos.findAll();
+	public ModelAndView pesquisar(@ModelAttribute("filtro") TituloFilter filtro){
+		List<Titulo> todosTitulos = cadastroTituloService.filtrar(filtro);
 		ModelAndView mv = new ModelAndView(PESQUISA_TITULO);
 		mv.addObject(ATRIBUTO_TITULOS, todosTitulos);
 		return mv;
