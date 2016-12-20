@@ -88,6 +88,10 @@ public class Titulo {
 	public boolean isPendente(){
 		return StatusTitulo.PENDENTE.equals(this.status);
 	}
+	
+	public boolean isCancelado(){
+		return StatusTitulo.CANCELADO.equals(this.status);
+	}
 
 	@Override
 	public int hashCode() {
